@@ -29,6 +29,7 @@ console.log(topic);
 // Usage
 const subscribeTopic = new SubscribeTopicBuilder()
     .withVersion("v1")
+    .withClientType(ClientType.UI)
     .withTargetUUID("123")
     .withSenderUUID("456")
     .withRequestUUID("789")

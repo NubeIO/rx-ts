@@ -144,6 +144,12 @@ export class SubscribeTopicBuilder {
         return this;
     }
 
+    withClientType(clientType: ClientType): SubscribeTopicBuilder {
+        this.parts.push(clientType);
+        return this;
+    }
+
+
     withTargetUUID(targetUUID: string): SubscribeTopicBuilder {
         this.parts.push(targetUUID);
         return this;
