@@ -1,9 +1,10 @@
 import {
     CommandBuilder,
-    PublishTopicBuilder,
+    RequestTopicBuilder,
     DataType,
     ClientType,
     Type,
+    RequestType,
     SubscribeTopicBuilder
 } from '../command/command';
 import { MQTTManager, BrokerConfig } from '../mqttlib/mqtt';
@@ -12,15 +13,18 @@ import { MQTTManager, BrokerConfig } from '../mqttlib/mqtt';
 // ts-node test.ts
 
 
+// r/req/v1/cloud/RX-1/plain/query/RX-2/req-uuid
+
 // Usage
-const topic = new PublishTopicBuilder()
+const topic = new RequestTopicBuilder()
+    .withRequestType(RequestType.REQ)
     .withVersion("v1")
     .withClientType(ClientType.UI)
     .withTargetUUID("123")
-    .withSenderUUID("456")
-    .withRequestUUID("789")
     .withDataType(DataType.Plain)
     .withType(Type.Objects)
+    .withSenderUUID("456")
+    .withRequestUUID("789")
     .build();
 
 console.log(topic);

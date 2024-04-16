@@ -9,6 +9,10 @@ interface Command {
     childs?: string;
 }
 
+
+	// req 
+	// resp r/resp/v1/cloud/RX-2/plain/query/RX-1/req-uuid
+
 export class CommandBuilder {
     private readonly request: Command;
 
@@ -80,102 +84,65 @@ export enum Type {
     Runtime = "runtime",
 }
 
+export enum RequestType {
+    REQ = "req", // request
+    RESP = "res" // response 
+}
 
-export class PublishTopicBuilder {
+export class RequestTopicBuilder {
     private readonly parts: string[];
+
+    private requestType: RequestType = RequestType.REQ; // req (request) is the default value or resp for response 
+
 
     constructor() {
         this.parts = [];
     }
 
-    withVersion(version: string): PublishTopicBuilder {
+    withVersion(version: string): RequestTopicBuilder {
         this.parts.push(version);
         return this;
     }
 
-    withClientType(clientType: ClientType): PublishTopicBuilder {
+    withClientType(clientType: ClientType): RequestTopicBuilder {
         this.parts.push(clientType);
         return this;
     }
 
-
-    withTargetUUID(targetUUID: string): PublishTopicBuilder {
+    withTargetUUID(targetUUID: string): RequestTopicBuilder {
         this.parts.push(targetUUID);
         return this;
     }
 
-    withSenderUUID(senderUUID: string): PublishTopicBuilder {
+    withSenderUUID(senderUUID: string): RequestTopicBuilder {
         this.parts.push(senderUUID);
         return this;
     }
 
-    withRequestUUID(requestUUID: string): PublishTopicBuilder {
+    withRequestUUID(requestUUID: string): RequestTopicBuilder {
         this.parts.push(requestUUID);
         return this;
     }
 
-    withDataType(dataType: DataType = DataType.Plain): PublishTopicBuilder {
+    withDataType(dataType: DataType = DataType.Plain): RequestTopicBuilder {
         this.parts.push(dataType);
         return this;
     }
 
-    withType(type: Type): PublishTopicBuilder {
+    withType(type: Type): RequestTopicBuilder {
         this.parts.push(type);
         return this;
     }
 
+    withRequestType(requestType: RequestType): RequestTopicBuilder {
+        this.requestType = requestType;
+        return this;
+    }
+
+
     build(): string {
-        return `r/req/${this.parts.join("/")}`;
+        return `r/${this.requestType}/${this.parts.join("/")}`;
     }
 }
 
 
-
-
-export class SubscribeTopicBuilder {
-    private readonly parts: string[];
-
-    constructor() {
-        this.parts = [];
-    }
-
-    withVersion(version: string): SubscribeTopicBuilder {
-        this.parts.push(version);
-        return this;
-    }
-
-    withClientType(clientType: ClientType): SubscribeTopicBuilder {
-        this.parts.push(clientType);
-        return this;
-    }
-
-
-    withTargetUUID(targetUUID: string): SubscribeTopicBuilder {
-        this.parts.push(targetUUID);
-        return this;
-    }
-
-    withSenderUUID(senderUUID: string): SubscribeTopicBuilder {
-        this.parts.push(senderUUID);
-        return this;
-    }
-
-    withRequestUUID(requestUUID: string): SubscribeTopicBuilder {
-        this.parts.push(requestUUID);
-        return this;
-    }
-
-    withDataType(dataType: DataType = DataType.Plain): SubscribeTopicBuilder {
-        this.parts.push(dataType);
-        return this;
-    }
-
-    withType(type: Type): SubscribeTopicBuilder {
-        this.parts.push(type);
-        return this;
-    }
-
-    build(): string {
-        return `r/resp/${this.parts.join("/")}`;
-    }
-}
